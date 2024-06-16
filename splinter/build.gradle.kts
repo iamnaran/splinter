@@ -30,6 +30,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
@@ -39,14 +40,15 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.google.gson)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.datastore.core)
-
-    implementation(libs.google.protobuf)
-
     implementation(libs.androidx.worker.runtime)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+

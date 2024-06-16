@@ -1,4 +1,4 @@
-package com.iamnaran.splinter.model
+package com.iamnaran.splinter.data.model
 
 class SpParams {
     private val params: MutableMap<String, Any> = mutableMapOf()
