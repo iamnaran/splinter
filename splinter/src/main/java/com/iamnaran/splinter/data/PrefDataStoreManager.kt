@@ -41,7 +41,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
         return jsonString.fromJson<List<Event>>() ?: emptyList()
     }
 
-    suspend fun addEventToCached(newEvent: Event) {
+    suspend fun addEventToCache(newEvent: Event) {
         val currentEvents = getCachedEventList().toMutableList()
         currentEvents.add(newEvent)
         saveCachedEventList(currentEvents)

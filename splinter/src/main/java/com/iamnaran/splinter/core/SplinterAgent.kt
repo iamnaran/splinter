@@ -2,7 +2,14 @@ package com.iamnaran.splinter.core
 
 import android.content.Context
 import com.iamnaran.splinter.data.PrefDataStoreManager
+import com.iamnaran.splinter.data.model.Event
+import com.iamnaran.splinter.data.model.EventStatus
 import com.iamnaran.splinter.data.model.Session
+import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
+import com.iamnaran.splinter.utils.Utils.toJson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.UUID
 
@@ -44,38 +51,42 @@ object SplinterAgent {
     }
 
     private fun createSession(): Session {
-        return Session(generateRandomId(), System.currentTimeMillis())
+        return Session()
     }
 
     fun logSplinterEvent(eventName: String, properties: Map<String, Any> = emptyMap()) {
-
-        if (currentSession != null){
-
-
-        }else{
+        if (contextRef == null) {
+            throw IllegalStateException("SplinterAgent not initialized")
+        }
+        if (currentSession == null) {
             startSession()
+        }
+
+        val newEvent = Event(
+            name = eventName,
+            properties = properties.toJson(),
+            eventStatus = EventStatus.CACHED
+        )
+
+        CoroutineScope(CoroutineDispatcherProvider.IO).launch {
+            prefDataStoreManager.addEventToCache(newEvent)
         }
 
     }
 
 
-    fun setGroupProfile(){
+    fun setGroupProfile() {
 
     }
 
 
-    fun setProfile(){
+    fun setProfile() {
 
     }
 
 
     fun getActiveSessionId(): String {
         return currentSession!!.id
-    }
-
-
-    private fun generateRandomId(): String {
-        return UUID.randomUUID().toString()
     }
 
 
