@@ -36,15 +36,9 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
     implementation(libs.google.gson)
     implementation(libs.androidx.worker.runtime)
-
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    implementation(libs.room.compiler)
+    implementation(libs.androidx.datastore)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

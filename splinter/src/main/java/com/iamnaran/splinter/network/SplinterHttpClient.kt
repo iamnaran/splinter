@@ -9,7 +9,7 @@ import java.net.URL
 
 internal class SplinterHttpClient(config: Config) {
 
-    internal fun sendSplinterEventsToServer() {
+    fun sendSplinterEventsToServer() {
 
         // todo implement sending logic
     }

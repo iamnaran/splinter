@@ -1,7 +1,7 @@
 package com.iamnaran.splinter.core
 
 import android.content.Context
-import com.iamnaran.splinter.data.DataManager
+import com.iamnaran.splinter.data.PrefDataStoreManager
 import com.iamnaran.splinter.data.model.Session
 import java.lang.ref.WeakReference
 import java.util.UUID
@@ -10,10 +10,9 @@ object SplinterAgent {
 
     private var instance: SplinterAgent? = null
     private var contextRef: WeakReference<Context>? = null
-    private lateinit var dataManager: DataManager
+    private lateinit var prefDataStoreManager: PrefDataStoreManager
     private lateinit var config: Config
     private var currentSession: Session? = null
-
 
     fun getInstance(context: Context, config: Config): SplinterAgent {
         if (instance == null) {
@@ -29,8 +28,7 @@ object SplinterAgent {
 
     private fun init(context: Context, config: Config) {
         contextRef = WeakReference(context.applicationContext)
-        dataManager = DataManager.getInstance(context)
-        dataManager.init()
+        prefDataStoreManager = PrefDataStoreManager.getInstance(context)
         this.config = config
         startSession()
     }

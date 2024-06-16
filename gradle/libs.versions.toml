@@ -39,13 +39,10 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-worker-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workerRuntime" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
 
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-google-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
