@@ -1,11 +1,11 @@
-package com.iamnaran.splinter.data
+package com.iamnaran.splinter.data.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.iamnaran.splinter.data.entity.EventStatus
 
-class DbTypeConvertor {
+class TypeConvertor {
 
     @TypeConverter
     fun fromString(value: String): List<String> {

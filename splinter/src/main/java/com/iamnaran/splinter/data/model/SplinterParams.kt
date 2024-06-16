@@ -1,29 +1,10 @@
 package com.iamnaran.splinter.data.model
 
-class SplinterParams {
-    private val params: MutableMap<String, Any> = mutableMapOf()
+object SplinterParams {
+    const val SPLINTER_ID = "splinter_id"
+    const val SPLINTER_NAME = "splinter_name"
+    const val SPLINTER_TYPE = "splinter_type"
+    const val SPLINTER_CONTENT = "splinter_content"
+    const val SPLINTER_JSON = "splinter_json"
 
-    fun putString(key: String, value: String) {
-        params[key] = value
-    }
-
-    fun putInt(key: String, value: Int) {
-        params[key] = value
-    }
-
-    fun putBoolean(key: String, value: Boolean) {
-        params[key] = value
-    }
-
-    fun putLong(key: String, value: Long) {
-        params[key] = value
-    }
-
-    fun putDouble(key: String, value: Double) {
-        params[key] = value
-    }
-
-    fun toMap(): Map<String, Any> {
-        return params.toMap()
-    }
 }

@@ -1,6 +1,7 @@
 package com.iamnaran.splinter.sample
 
 import android.app.Application
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.iamnaran.splinter.core.Config
 import com.iamnaran.splinter.core.SplinterSdk
 
@@ -15,5 +16,6 @@ class SampleApp : Application() {
             maxCachedEvents = 100
         }
         SplinterSdk.getInstance(this, config)
+
     }
 }
