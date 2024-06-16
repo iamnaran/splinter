@@ -6,21 +6,20 @@ import com.iamnaran.splinter.data.model.Session
 import java.lang.ref.WeakReference
 import java.util.UUID
 
-object SplinterSdk {
+object SplinterAgent {
 
-    private var instance: SplinterSdk? = null
+    private var instance: SplinterAgent? = null
     private var contextRef: WeakReference<Context>? = null
     private lateinit var dataManager: DataManager
     private lateinit var config: Config
-
     private var currentSession: Session? = null
 
 
-    fun getInstance(context: Context, config: Config): SplinterSdk {
+    fun getInstance(context: Context, config: Config): SplinterAgent {
         if (instance == null) {
             synchronized(this) {
                 if (instance == null) {
-                    instance = SplinterSdk
+                    instance = SplinterAgent
                     init(context, config)
                 }
             }
@@ -36,36 +35,48 @@ object SplinterSdk {
         startSession()
     }
 
-    private fun startSession(){
-        if (currentSession != null){
-            if (!currentSession!!.isActive(config.sessionTimeOutDurationInMinute)){
+    private fun startSession() {
+        if (currentSession != null) {
+            if (!currentSession!!.isActive(config.sessionTimeOutDurationInMinute)) {
                 currentSession = createSession()
             }
-
+        } else {
+            currentSession = createSession()
         }
-        currentSession = createSession()
     }
 
     private fun createSession(): Session {
-        return Session(UUID.randomUUID().toString(), System.currentTimeMillis())
-    }
-
-    fun getActiveSessionId(): String{
-        return currentSession!!.id
+        return Session(generateRandomId(), System.currentTimeMillis())
     }
 
     fun logSplinterEvent(eventName: String, properties: Map<String, Any> = emptyMap()) {
 
+        if (currentSession != null){
+
+
+        }else{
+            startSession()
+        }
 
     }
 
-    private fun sendCachedEventsToServer() {
 
+    fun setGroupProfile(){
 
     }
 
 
-    private fun generateEventId(): String {
+    fun setProfile(){
+
+    }
+
+
+    fun getActiveSessionId(): String {
+        return currentSession!!.id
+    }
+
+
+    private fun generateRandomId(): String {
         return UUID.randomUUID().toString()
     }
 

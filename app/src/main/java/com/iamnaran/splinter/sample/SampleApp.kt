@@ -2,8 +2,7 @@ package com.iamnaran.splinter.sample
 
 import android.app.Application
 import com.iamnaran.splinter.core.Config
-import com.iamnaran.splinter.core.SplinterSdk
-import com.iamnaran.splinter.utils.sessionTimeOutDurationInMinute
+import com.iamnaran.splinter.core.SplinterAgent
 
 class SampleApp : Application() {
 
@@ -11,12 +10,12 @@ class SampleApp : Application() {
         super.onCreate()
         // Initialize Splinter SDK
 
-        val config = Config().apply {
+        val config = Config("YOUR_API_KEY","YOUR_API_SECRET").apply {
             dispatchIntervalHours = 2L
             maxCachedEvents = 100
             sessionTimeOutDurationInMinute = 1
         }
-        SplinterSdk.getInstance(this, config)
+        SplinterAgent.getInstance(this, config)
 
     }
 }
