@@ -6,7 +6,7 @@ data class Event(
     val name: String,
     val properties: String,
     val eventStatus: EventStatus,
-    val createdAt: String
+    val createdAt: String,
 )
 
 enum class EventStatus {

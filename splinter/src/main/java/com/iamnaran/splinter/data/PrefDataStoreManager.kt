@@ -5,7 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.utils.Constants
+import com.iamnaran.splinter.utils.Utils.fromJson
+import com.iamnaran.splinter.utils.Utils.toJson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -16,6 +19,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
 
     private val dataSource = context.dataStore
 
+
     companion object {
         @Volatile
         private var INSTANCE: PrefDataStoreManager? = null
@@ -25,6 +29,22 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
                 INSTANCE ?: PrefDataStoreManager(context).also { INSTANCE = it }
             }
         }
+    }
+
+    suspend fun saveCachedEventList(events: List<Event>) {
+        val jsonString = events.toJson()
+        putPreference(PrefConstants.EVENTS_JSON, jsonString)
+    }
+
+    suspend fun getCachedEventList(): List<Event> {
+        val jsonString = getFirstPreference(PrefConstants.EVENTS_JSON, "")
+        return jsonString.fromJson<List<Event>>() ?: emptyList()
+    }
+
+    suspend fun addEventToCached(newEvent: Event) {
+        val currentEvents = getCachedEventList().toMutableList()
+        currentEvents.add(newEvent)
+        saveCachedEventList(currentEvents)
     }
 
     override suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T):
