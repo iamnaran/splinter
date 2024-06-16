@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity("user")
-data class SpEvent(
+data class Event(
     @ColumnInfo(name = "id")
     @SerializedName("id")
     @PrimaryKey val id: String,
@@ -21,13 +21,11 @@ data class SpEvent(
 
     @ColumnInfo(name = "status")
     @SerializedName("status")
-    val spEventStatus: SpEventStatus,
+    val eventStatus: EventStatus,
 
     @ColumnInfo(name = "createdAt")
     @SerializedName("createdAt")
-    val createdAt: String,
-
-    )
+    val createdAt: String )
 
 
 

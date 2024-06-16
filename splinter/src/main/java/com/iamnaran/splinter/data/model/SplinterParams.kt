@@ -1,6 +1,6 @@
 package com.iamnaran.splinter.data.model
 
-class SpParams {
+class SplinterParams {
     private val params: MutableMap<String, Any> = mutableMapOf()
 
     fun putString(key: String, value: String) {

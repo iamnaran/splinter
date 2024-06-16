@@ -2,7 +2,7 @@ package com.iamnaran.splinter.data
 
 import android.content.Context
 import androidx.room.Room
-import com.iamnaran.splinter.data.entity.SpEvent
+import com.iamnaran.splinter.data.entity.Event
 import kotlinx.coroutines.flow.Flow
 
 class DataManager private constructor(private val appDatabase: AppDatabase) {
@@ -25,19 +25,19 @@ class DataManager private constructor(private val appDatabase: AppDatabase) {
         }
     }
 
-    fun getAllSpEvents() : Flow<List<SpEvent>> {
+    fun getAllSpEvents() : Flow<List<Event>> {
         return appDatabase.spEventDao().getAllSpEvents()
     }
 
-    fun updateSpEventById() : Flow<List<SpEvent>> {
+    fun updateSpEventById() : Flow<List<Event>> {
         return appDatabase.spEventDao().getAllSpEvents()
     }
 
-    fun deleteSpEvents() : Flow<List<SpEvent>> {
+    fun deleteSpEvents() : Flow<List<Event>> {
         return appDatabase.spEventDao().getAllSpEvents()
     }
 
-    fun deleteSpEventById() : Flow<List<SpEvent>> {
+    fun deleteSpEventById() : Flow<List<Event>> {
         return appDatabase.spEventDao().getAllSpEvents()
     }
 }

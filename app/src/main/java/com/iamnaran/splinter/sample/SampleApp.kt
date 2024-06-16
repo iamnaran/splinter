@@ -1,7 +1,7 @@
 package com.iamnaran.splinter.sample
 
 import android.app.Application
-import com.iamnaran.splinter.core.SplinterConfig
+import com.iamnaran.splinter.core.Config
 import com.iamnaran.splinter.core.SplinterSdk
 
 class SampleApp : Application() {
@@ -10,7 +10,7 @@ class SampleApp : Application() {
         super.onCreate()
         // Initialize Splinter SDK
 
-        val config = SplinterConfig().apply {
+        val config = Config().apply {
             dispatchIntervalHours = 2L
             maxCachedEvents = 100
         }

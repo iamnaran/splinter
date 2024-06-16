@@ -10,21 +10,21 @@ object SplinterSdk {
     private var instance: SplinterSdk? = null
     private var contextRef: WeakReference<Context>? = null
     private lateinit var dataManager: DataManager
-    private lateinit var config: SplinterConfig
+    private lateinit var config: Config
 
-    fun getInstance(context: Context, splinterConfig: SplinterConfig): SplinterSdk {
+    fun getInstance(context: Context, config: Config): SplinterSdk {
         if (instance == null) {
             synchronized(this) {
                 if (instance == null) {
                     instance = SplinterSdk
-                    init(context, splinterConfig)
+                    init(context, config)
                 }
             }
         }
         return instance!!
     }
 
-    private fun init(context: Context, config: SplinterConfig) {
+    private fun init(context: Context, config: Config) {
         contextRef = WeakReference(context.applicationContext)
         dataManager = DataManager.getInstance(context)
         this.config = config

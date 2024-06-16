@@ -1,6 +1,6 @@
 package com.iamnaran.splinter.data.entity
 
-enum class SpEventStatus {
+enum class EventStatus {
     CACHED,
     DELIVERED
 }

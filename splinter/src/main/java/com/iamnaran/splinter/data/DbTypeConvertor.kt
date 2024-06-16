@@ -3,7 +3,7 @@ package com.iamnaran.splinter.data
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.iamnaran.splinter.data.entity.SpEventStatus
+import com.iamnaran.splinter.data.entity.EventStatus
 
 class DbTypeConvertor {
 
@@ -19,13 +19,13 @@ class DbTypeConvertor {
     }
 
     @TypeConverter
-    fun fromEnum(value: SpEventStatus): String {
+    fun fromEnum(value: EventStatus): String {
         return value.name
     }
 
     @TypeConverter
-    fun toEnum(value: String): SpEventStatus {
-        return SpEventStatus.valueOf(value)
+    fun toEnum(value: String): EventStatus {
+        return EventStatus.valueOf(value)
     }
 
 
