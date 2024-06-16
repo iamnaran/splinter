@@ -5,23 +5,16 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.iamnaran.splinter.data.model.Session
 
 @Entity(
-    tableName = "events",
-    foreignKeys = [
-        ForeignKey(
-            entity = Session::class,
-            parentColumns = ["sessionId"],
-            childColumns = ["sessionId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
+    tableName = "events"
 )
 data class Event(
     @PrimaryKey(autoGenerate = true) val eventId: Int = 0,
 
     @SerializedName("session_id")
-    @ColumnInfo(index = true) val sessionId: Int,
+    @ColumnInfo(name = "session_id") val sessionId: String,
 
     @ColumnInfo(name = "name")
     @SerializedName("name")

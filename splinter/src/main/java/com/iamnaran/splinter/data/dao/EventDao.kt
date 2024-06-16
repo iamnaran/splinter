@@ -11,12 +11,16 @@ import kotlinx.coroutines.flow.Flow
 interface  EventDao {
 
     @Query("SELECT * FROM user WHERE id = :id")
-    fun getSpEventById(id: Long): Flow<Event>
+    suspend fun getEventById(id: Long): Flow<Event>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSpEvent(event: Event)
+    suspend fun insert(event: Event)
 
     @Query("SELECT * FROM user")
-    fun getAllSpEvents(): Flow<List<Event>>
+    fun getAllEvents(): Flow<List<Event>>
+
+    // getAllEventsBySessionId
+    @Query("SELECT * FROM user WHERE sessionId = :sessionId")
+    suspend fun getAllEventsBySessionId(sessionId: String): Flow<List<Event>>
 
 }

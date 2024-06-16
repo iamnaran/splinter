@@ -1,6 +1,9 @@
 package com.iamnaran.splinter.core
 
+import com.iamnaran.splinter.utils.Constants
+
 data class Config(
-    var dispatchIntervalHours: Long = com.iamnaran.splinter.utils.dispatchIntervalHours,
-    var maxCachedEvents: Int = com.iamnaran.splinter.utils.maxCachedEvents
+    var dispatchIntervalHours: Long = Constants.DISPATCH_INTERVAL_DURATION_IN_MINUTE,
+    var maxCachedEvents: Int = Constants.MAX_CACHED_EVENTS,
+    var sessionTimeOutDurationInMinute: Long = Constants.SESSION_TIME_OUT_DURATION_IN_MINUTE
 )

@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import com.iamnaran.splinter.data.db.SplinterDatabase
 import com.iamnaran.splinter.data.entity.Event
+import com.iamnaran.splinter.data.repo.EventRepository
 import com.iamnaran.splinter.utils.SPLINTER_DATABASE_NAME
 import kotlinx.coroutines.flow.Flow
 
-class DataManager private constructor(private val splinterDatabase: SplinterDatabase) {
+class DataManager private constructor(private val database: SplinterDatabase) {
+
+
+    private var eventRepository: EventRepository? = null
 
     companion object {
         @Volatile
@@ -27,19 +31,19 @@ class DataManager private constructor(private val splinterDatabase: SplinterData
         }
     }
 
-    fun getAllSpEvents() : Flow<List<Event>> {
-        return splinterDatabase.spEventDao().getAllSpEvents()
+    fun init() {
+        eventRepository = EventRepository(database.eventsDao())
     }
 
-    fun updateSpEventById() : Flow<List<Event>> {
-        return splinterDatabase.spEventDao().getAllSpEvents()
+
+//    fun getAllSpEvents(): Flow<List<Event>> {
+//
+//
+//    }
+
+    fun getActiveSessionId() {
+
+
     }
 
-    fun deleteSpEvents() : Flow<List<Event>> {
-        return splinterDatabase.spEventDao().getAllSpEvents()
-    }
-
-    fun deleteSpEventById() : Flow<List<Event>> {
-        return splinterDatabase.spEventDao().getAllSpEvents()
-    }
 }
