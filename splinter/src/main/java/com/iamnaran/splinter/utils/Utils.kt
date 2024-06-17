@@ -3,12 +3,13 @@ package com.iamnaran.splinter.utils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-object Utils {
+internal object Utils {
 
-    private val gson = Gson()
+    val gson = Gson()
 
     // Convert from JSON to object
-    fun <T> String.fromJson(): T? {
+
+    inline fun <reified T> String.fromJson(): T? {
         return try {
             gson.fromJson(this, object : TypeToken<T>() {}.type)
         } catch (e: Exception) {

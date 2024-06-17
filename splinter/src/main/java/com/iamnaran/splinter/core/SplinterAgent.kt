@@ -16,13 +16,14 @@ import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
 import com.iamnaran.splinter.utils.SplinterLog
 import com.iamnaran.splinter.utils.Utils.toJson
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 
 object SplinterAgent {
 
-    val TAG = SplinterAgent::class.java.simpleName
+    private val TAG = SplinterAgent::class.java.simpleName
 
     @Volatile
     private var instance: SplinterAgent? = null
@@ -32,14 +33,15 @@ object SplinterAgent {
     private var currentSession: Session? = null
     private var identity: Identity? = null
 
-    fun getInstance(context: Context, config: Config): SplinterAgent {
+    fun getInstance(context: Context): SplinterAgent {
         return instance ?: synchronized(this) {
             instance ?: SplinterAgent.also {
-                it.init(context, config)
+                it.init(context)
                 instance = it
             }
         }
     }
+
 
     /**
      * Initializes the SplinterAgent with context and config.
@@ -47,11 +49,20 @@ object SplinterAgent {
      * @param context The application context.
      * @param config The configuration object.
      */
-    private fun init(context: Context, config: Config) {
+    fun init(context: Context) {
         contextRef = WeakReference(context.applicationContext)
         prefDataStoreManager = PrefDataStoreManager.getInstance(context)
-        this.config = config
         startSession()
+    }
+
+    fun configure(config: Config) {
+        this.config = config
+        if (contextRef?.get() != null) {
+            startEventDispatcherWorker(contextRef?.get()!!)
+
+            SplinterLog.info(TAG, "Event Dispatcher Worker Started")
+
+        }
     }
 
 
@@ -68,12 +79,8 @@ object SplinterAgent {
             } else {
                 createSession()
             }
-        if (contextRef?.get() != null) {
-            startEventDispatcherWorker(contextRef?.get()!!)
-        }
 
         SplinterLog.info(TAG, "Session has been started")
-
 
     }
 
@@ -146,6 +153,16 @@ object SplinterAgent {
 
 
     /**
+     * Sets the identity for the current session.
+     *
+     * @param identity The identity to set.
+     */
+    fun setIdentity(identity: Identity) {
+        this.identity = identity
+    }
+
+
+    /**
      * Gets the active session ID.
      *
      * @return The active session ID.
@@ -160,8 +177,8 @@ object SplinterAgent {
      *
      * @return The list of saved events.
      */
-    suspend fun getSavedEvents(): List<Event> {
-        return prefDataStoreManager.getCachedEventList()
+    public fun getSavedEvents(): Flow<List<Event>> {
+        return prefDataStoreManager.getCachedEventListFlow()
     }
 
 

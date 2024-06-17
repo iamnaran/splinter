@@ -10,12 +10,13 @@ class SampleApp : Application() {
         super.onCreate()
         // Initialize Splinter SDK
 
-        val config = Config("YOUR_API_KEY","YOUR_API_SECRET").apply {
+        val splinterConfig = Config("YOUR_API_KEY", "YOUR_API_SECRET").apply {
             dispatchIntervalDurationInMinute = 2L
             maxCachedEvents = 100
             sessionTimeOutDurationInMinute = 1
         }
-        SplinterAgent.getInstance(this, config)
+        val splinterAgent = SplinterAgent.getInstance(this)
+        splinterAgent.configure(splinterConfig)
 
     }
 }

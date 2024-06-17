@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.reflect.TypeToken
 import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.utils.Constants
 import com.iamnaran.splinter.utils.Utils.fromJson
@@ -54,7 +55,28 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      */
     internal suspend fun getCachedEventList(): List<Event> {
         val jsonString = getFirstPreference(PrefConstants.EVENTS_JSON, "")
-        return jsonString.fromJson<List<Event>>() ?: emptyList()
+        val eventList: List<Event>? = jsonString.fromJson<List<Event>>()
+        return eventList ?: emptyList()
+    }
+
+
+    /**
+     * Retrieves the cached list of events from preferences.
+     *
+     * @return List of Event objects retrieved from preferences.
+     */
+    internal fun getCachedEventListFlow(): Flow<List<Event>> {
+        return dataSource.data.catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            val jsonString = preferences[PrefConstants.EVENTS_JSON] ?: ""
+            val eventList: List<Event>? = jsonString.fromJson<List<Event>>()
+            eventList ?: emptyList()
+        }
     }
 
 
