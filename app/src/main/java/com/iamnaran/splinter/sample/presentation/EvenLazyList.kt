@@ -80,7 +80,7 @@ fun EventItem(event: Event) {
 
             Text(
                 text = event.properties,
-                style = Typography.labelMedium,
+                style = Typography.labelSmall,
                 modifier = Modifier.padding(8.dp)
             )
 
