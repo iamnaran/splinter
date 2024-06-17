@@ -8,12 +8,17 @@ package com.iamnaran.splinter.sample.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ButtonDefaults.textButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,6 +28,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,36 +66,37 @@ class MainActivity : ComponentActivity() {
 private fun MainContent(eventList: List<Event>) {
 
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val counterEvent = remember { mutableIntStateOf(0) }
+    val listState = rememberLazyListState()
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(text = "Splinter Sample App", fontSize = 14.sp) })
     }, bottomBar = {
         BottomAppBar {
-            Row {
-                TextButton(onClick = {
-                    SplinterAgent.getInstance(context).logSplinterEvent("New Event $counterEvent.intValue")
-                    counterEvent.intValue += 1
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextButton(
+                    colors = textButtonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary
+                    ),
+                    onClick = {
+                        SplinterAgent.getInstance(context)
+                            .logSplinterEvent("New Event " + counterEvent.intValue.toString())
+                        counterEvent.intValue += 1
 
-                }) {
+                    }) {
                     Text(text = "Log New Event")
-                }
-
-                TextButton(onClick = {
-
-                }) {
-                    Text(text = "Dispatch All Events")
                 }
             }
         }
     }) { innerPadding ->
 
         Box(modifier = Modifier.padding(innerPadding)) {
-
-
-            EventList(eventList)
-
-
+            EventList(eventList, listState)
         }
 
     }
