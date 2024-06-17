@@ -1,35 +1,46 @@
 package com.iamnaran.splinter.network
 
 import com.iamnaran.splinter.core.Config
+import com.iamnaran.splinter.data.model.Event
+import com.iamnaran.splinter.utils.Utils.toJson
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.IOException
-import java.io.OutputStream
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 
-internal class SplinterHttpClient(config: Config) {
+internal class SplinterHttpClient(private val config: Config) {
 
-    fun sendSplinterEventsToServer() {
+    private val client: OkHttpClient = OkHttpClient.Builder().build()
 
-        // todo implement sending logic
-    }
+    fun sendEvents(events: List<Event>, callback: (Boolean, String) -> Unit) {
+        val jsonPayload = events.toJson()
+        val requestBody = jsonPayload.toRequestBody("application/json".toMediaTypeOrNull())
 
-    private fun getConnection(url: String): HttpURLConnection {
-        val requestedURL: URL =
-            try {
-                URL(url)
-            } catch (e: MalformedURLException) {
-                throw IOException("Invalid url: $url", e)
+        val request = Request.Builder()
+            .url("serverUrl")
+            .post(requestBody)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("API-KEY", config.splinterAPIKey)
+            .addHeader("API-SECRET", config.splinterAPISecret)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                callback(false, e.message ?: "Unknown error")
             }
-        val connection = requestedURL.openConnection() as HttpURLConnection
-        connection.requestMethod = "POST"
-        connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
-        connection.setRequestProperty("Accept", "application/json")
-        connection.doOutput = true
-        connection.doInput = true
-        connection.connectTimeout = 15_000
-        connection.readTimeout = 20_1000
-        return connection
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    callback(true, response.body?.string() ?: "Success")
+                } else {
+                    callback(false, response.body?.string() ?: "Error")
+                }
+            }
+        })
     }
 
 

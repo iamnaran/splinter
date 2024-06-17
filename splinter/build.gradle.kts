@@ -40,6 +40,9 @@ dependencies {
     implementation(libs.androidx.worker.runtime)
     implementation(libs.androidx.datastore)
 
+    implementation(libs.okhttp3)
+    implementation(libs.okhttp3.logging)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

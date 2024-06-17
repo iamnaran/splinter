@@ -15,10 +15,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
+/**
+ * Manages preferences data store operations.
+ *
+ * @param context Application context used to initialize data store.
+ */
 class PrefDataStoreManager(context: Context): IPrefDataStore {
 
+    // Data store instance from context extension property
     private val dataSource = context.dataStore
-
 
     companion object {
         @Volatile
@@ -31,19 +36,48 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
         }
     }
 
+
+    /**
+     * Saves a list of cached events to the preferences.
+     *
+     * @param events List of Event objects to be saved.
+     */
     suspend fun saveCachedEventList(events: List<Event>) {
         val jsonString = events.toJson()
         putPreference(PrefConstants.EVENTS_JSON, jsonString)
     }
 
+    /**
+     * Retrieves the cached list of events from preferences.
+     *
+     * @return List of Event objects retrieved from preferences.
+     */
     suspend fun getCachedEventList(): List<Event> {
         val jsonString = getFirstPreference(PrefConstants.EVENTS_JSON, "")
         return jsonString.fromJson<List<Event>>() ?: emptyList()
     }
 
+
+    /**
+     * Adds a new event to the cached list and saves it in preferences.
+     *
+     * @param newEvent The new Event object to be added.
+     */
+
     suspend fun addEventToCache(newEvent: Event) {
         val currentEvents = getCachedEventList().toMutableList()
         currentEvents.add(newEvent)
+        saveCachedEventList(currentEvents)
+    }
+
+    /**
+     * Remove event from cached list and saves it in preferences.
+     *
+     * @param eventsToRemove The new Event object to be added.
+     */
+    suspend fun removeEventsFromCache(eventsToRemove: List<Event>) {
+        val currentEvents = getCachedEventList().toMutableList()
+        currentEvents.removeAll(eventsToRemove)
         saveCachedEventList(currentEvents)
     }
 
@@ -87,6 +121,8 @@ private val Context.dataStore by preferencesDataStore(
 )
 
 
+
+// Interface defining the preferences data store operations
 interface IPrefDataStore {
     suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T): Flow<T>
     suspend fun <T> getFirstPreference(key: Preferences.Key<T>,defaultValue: T):T

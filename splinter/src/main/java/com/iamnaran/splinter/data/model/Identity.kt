@@ -1,8 +1,7 @@
 package com.iamnaran.splinter.data.model
 
 data class Identity(
-    val id: Int,
-    val name: String,
-    val email: String,
-    val age: String
+    val userId: Int,
+    val fullName: String,
+    val primaryEmail: String,
 )

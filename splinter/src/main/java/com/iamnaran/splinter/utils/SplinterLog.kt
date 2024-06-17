@@ -7,7 +7,7 @@ import android.util.Log.WARN
 /**
  * Class for handling logging in the application with different log levels.
  */
-class SplinterLog {
+object SplinterLog {
 
     // The minimum log level to be logged. Default is WARN.
     private var sMinLevel = WARN
@@ -22,7 +22,7 @@ class SplinterLog {
     }
 
     fun debug(tag: String, msg: String) {
-        if (shouldLog(SplinterLogType.DEBUG)) {
+        if (shouldLog(SplinterLogType.BASIC)) {
             Log.d(tag, msg)
         }
     }
@@ -43,8 +43,7 @@ class SplinterLog {
 
 enum class SplinterLogType {
     NONE,
-    DEBUG,
+    BASIC,
     INFO,
-    WARN,
     ERROR,
 }

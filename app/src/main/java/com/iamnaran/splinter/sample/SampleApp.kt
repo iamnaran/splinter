@@ -11,7 +11,7 @@ class SampleApp : Application() {
         // Initialize Splinter SDK
 
         val config = Config("YOUR_API_KEY","YOUR_API_SECRET").apply {
-            dispatchIntervalHours = 2L
+            dispatchIntervalDurationInMinute = 2L
             maxCachedEvents = 100
             sessionTimeOutDurationInMinute = 1
         }
