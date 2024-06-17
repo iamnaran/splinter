@@ -1,20 +1,17 @@
 # Splinter
 
-Splinter is a lightweight SDK designed to manage and log events efficiently in Android applications.
-It provides functionalities to track events, manage sessions, and dispatch events to a server periodically.
+Splinter Analytics is a powerful and lightweight SDK designed to help developers efficiently manage, track, and log events.
 
 ## Dependencies
-
-- Kotlin Coroutines: For asynchronous programming.
-- WorkManager: For background work scheduling.
-- Android DataStore: For data persistence.
+- Kotlin Coroutines
+- WorkManager
+- Preference DataStore
 
 ## Features
 
-- **Session Management:** Automatically manages session creation and timeout.
-- **Event Logging:** Logs events with optional properties.
-- **Periodic Event Dispatch:** Uses WorkManager to dispatch cached events at specified intervals.
-- **Data Persistence:** Stores events locally using Android's DataStore.
+- **Event Logging:** 
+- **Periodic Event Dispatch:** 
+- **Data Persistence:**
 
 ## Initialization
 

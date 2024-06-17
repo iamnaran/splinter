@@ -144,7 +144,7 @@ private val Context.dataStore by preferencesDataStore(
 
 
 
-// Interface defining the preferences data store operations
+// Interface defining the core operation of preferences data store
 interface IPrefDataStore {
     suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T): Flow<T>
     suspend fun <T> getFirstPreference(key: Preferences.Key<T>,defaultValue: T):T

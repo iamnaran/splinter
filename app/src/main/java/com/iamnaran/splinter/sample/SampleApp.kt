@@ -15,8 +15,9 @@ class SampleApp : Application() {
             maxCachedEvents = 100
             sessionTimeOutDurationInMinute = 1
         }
-        val splinterAgent = SplinterAgent.getInstance(this)
-        splinterAgent.configure(splinterConfig)
+        SplinterAgent.initalize(this)
+        SplinterAgent.getInstance(this).configure(splinterConfig)
+
 
     }
 }

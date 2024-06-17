@@ -36,7 +36,7 @@ object SplinterAgent {
     fun getInstance(context: Context): SplinterAgent {
         return instance ?: synchronized(this) {
             instance ?: SplinterAgent.also {
-                it.init(context)
+                it.initalize(context)
                 instance = it
             }
         }
@@ -47,9 +47,8 @@ object SplinterAgent {
      * Initializes the SplinterAgent with context and config.
      *
      * @param context The application context.
-     * @param config The configuration object.
      */
-    fun init(context: Context) {
+    fun initalize(context: Context) {
         contextRef = WeakReference(context.applicationContext)
         prefDataStoreManager = PrefDataStoreManager.getInstance(context)
         startSession()
@@ -180,9 +179,5 @@ object SplinterAgent {
     public fun getSavedEvents(): Flow<List<Event>> {
         return prefDataStoreManager.getCachedEventListFlow()
     }
-
-
-
-
 
 }
