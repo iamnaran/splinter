@@ -14,7 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class DispatcherWorker(
+internal class DispatcherWorker(
     appContext: Context,
     private val config: Config,
     workerParams: WorkerParameters
@@ -60,6 +60,7 @@ class DispatcherWorker(
     }
 
     companion object {
-        private const val TAG = "SplinterDispatcher"
+         const val TAG = "SplinterDispatcher"
+         const val DISPATCHER_NAME = "X_SPLINTER_DISPATCHER_X"
     }
 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class SplinterDispatcher(
+internal class SplinterDispatcher(
     private val config: Config,
     private val prefDataStoreManager: PrefDataStoreManager,
 ) {

@@ -42,7 +42,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      *
      * @param events List of Event objects to be saved.
      */
-    suspend fun saveCachedEventList(events: List<Event>) {
+    internal suspend fun saveCachedEventList(events: List<Event>) {
         val jsonString = events.toJson()
         putPreference(PrefConstants.EVENTS_JSON, jsonString)
     }
@@ -52,7 +52,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      *
      * @return List of Event objects retrieved from preferences.
      */
-    suspend fun getCachedEventList(): List<Event> {
+    internal suspend fun getCachedEventList(): List<Event> {
         val jsonString = getFirstPreference(PrefConstants.EVENTS_JSON, "")
         return jsonString.fromJson<List<Event>>() ?: emptyList()
     }
@@ -64,7 +64,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      * @param newEvent The new Event object to be added.
      */
 
-    suspend fun addEventToCache(newEvent: Event) {
+    internal suspend fun addEventToCache(newEvent: Event) {
         val currentEvents = getCachedEventList().toMutableList()
         currentEvents.add(newEvent)
         saveCachedEventList(currentEvents)
@@ -75,7 +75,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      *
      * @param eventsToRemove The new Event object to be added.
      */
-    suspend fun removeEventsFromCache(eventsToRemove: List<Event>) {
+    internal suspend fun removeEventsFromCache(eventsToRemove: List<Event>) {
         val currentEvents = getCachedEventList().toMutableList()
         currentEvents.removeAll(eventsToRemove)
         saveCachedEventList(currentEvents)

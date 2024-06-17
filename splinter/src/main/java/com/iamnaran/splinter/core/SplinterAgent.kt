@@ -1,18 +1,28 @@
 package com.iamnaran.splinter.core
 
 import android.content.Context
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.iamnaran.splinter.data.PrefDataStoreManager
 import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.data.model.EventStatus
 import com.iamnaran.splinter.data.model.Identity
 import com.iamnaran.splinter.data.model.Session
+import com.iamnaran.splinter.network.DispatcherWorker
 import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
+import com.iamnaran.splinter.utils.SplinterLog
 import com.iamnaran.splinter.utils.Utils.toJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import java.util.concurrent.TimeUnit
 
 object SplinterAgent {
+
+    val TAG = SplinterAgent::class.java.simpleName
 
     @Volatile
     private var instance: SplinterAgent? = null
@@ -49,11 +59,22 @@ object SplinterAgent {
      * Starts a new session if there is no active session or the current session has timed out.
      */
     private fun startSession() {
-        currentSession = if (currentSession?.isActive(config.sessionTimeOutDurationInMinute) == true) {
-            currentSession
-        } else {
-            createSession()
+        if (contextRef?.get() == null) {
+            throw IllegalStateException("SplinterAgent not initialized")
         }
+        currentSession =
+            if (currentSession?.isActive(config.sessionTimeOutDurationInMinute) == true) {
+                currentSession
+            } else {
+                createSession()
+            }
+        if (contextRef?.get() != null) {
+            startEventDispatcherWorker(contextRef?.get()!!)
+        }
+
+        SplinterLog.info(TAG, "Session has been started")
+
+
     }
 
 
@@ -96,6 +117,31 @@ object SplinterAgent {
             prefDataStoreManager.addEventToCache(newEvent)
         }
 
+        SplinterLog.info(TAG, "New Splinter Event Logged")
+
+
+    }
+
+    private fun startEventDispatcherWorker(context: Context) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val periodicWorkRequest = PeriodicWorkRequest.Builder(
+            DispatcherWorker::class.java,
+            config.dispatchIntervalDurationInMinute,
+            TimeUnit.MINUTES
+        )
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            DispatcherWorker.DISPATCHER_NAME,
+            ExistingPeriodicWorkPolicy.UPDATE,
+            periodicWorkRequest
+        )
+
+        SplinterLog.info(TAG, "Event dispatcher worker started")
     }
 
 
@@ -117,6 +163,9 @@ object SplinterAgent {
     suspend fun getSavedEvents(): List<Event> {
         return prefDataStoreManager.getCachedEventList()
     }
+
+
+
 
 
 }
