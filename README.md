@@ -18,18 +18,13 @@ Splinter Analytics is a powerful and lightweight SDK designed to help developers
 Initialize Splinter SDK in your application class or wherever your application context is available:
 
 ```kotlin
-class YourApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        SplinterAgent.init(this      val splinterConfig = Config("YOUR_API_KEY", "YOUR_API_SECRET").apply {
-            dispatchIntervalDurationInMinute = 2L
-            maxCachedEvents = 100
-            sessionTimeOutDurationInMinute = 1
-        }
-        val splinterAgent = SplinterAgent.getInstance(this)
-        splinterAgent.initialize(splinterConfig)
-    }
+      val splinterConfig = Config("YOUR_API_KEY", "YOUR_API_SECRET").apply {
+    dispatchIntervalDurationInMinute = 2L
+    maxCachedEvents = 100
+    sessionTimeOutDurationInMinute = 1
 }
+val splinterAgent = SplinterAgent.getInstance(this)
+splinterAgent.initialize(splinterConfig)
 ```
 
 ## Logging Events
