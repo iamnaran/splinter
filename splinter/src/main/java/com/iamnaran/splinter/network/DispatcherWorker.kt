@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.iamnaran.splinter.core.Config
-import com.iamnaran.splinter.data.PrefDataStoreManager
+import com.iamnaran.splinter.data.PrefDatastoreManager
 import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.data.model.EventStatus
 import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
@@ -20,7 +20,7 @@ internal class DispatcherWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
 
-    private val prefDataStoreManager = PrefDataStoreManager.getInstance(appContext)
+    private val prefDataStoreManager = PrefDatastoreManager.getInstance(appContext)
     private val dispatcherScope = CoroutineScope(CoroutineDispatcherProvider.IO + SupervisorJob())
 
     override suspend fun doWork(): Result {

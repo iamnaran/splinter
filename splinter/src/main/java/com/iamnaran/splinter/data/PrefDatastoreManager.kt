@@ -1,11 +1,12 @@
 package com.iamnaran.splinter.data
 
 import android.content.Context
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.google.gson.reflect.TypeToken
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.utils.Constants
 import com.iamnaran.splinter.utils.Utils.fromJson
@@ -19,20 +20,24 @@ import java.io.IOException
 /**
  * Manages preferences data store operations.
  *
- * @param context Application context used to initialize data store.
  */
-class PrefDataStoreManager(context: Context): IPrefDataStore {
+open class PrefDatastoreManager(context: Context) : PrefOperations {
 
-    // Data store instance from context extension property
-    private val dataSource = context.dataStore
+    private val dataSource = PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() }
+        ),
+        produceFile = { context.preferencesDataStoreFile(Constants.SPLINTER_PREF_NAME) }
+    )
+
 
     companion object {
         @Volatile
-        private var INSTANCE: PrefDataStoreManager? = null
+        private var INSTANCE: PrefDatastoreManager? = null
 
-        fun getInstance(context: Context): PrefDataStoreManager {
+        fun getInstance(context: Context): PrefDatastoreManager {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: PrefDataStoreManager(context).also { INSTANCE = it }
+                INSTANCE ?: PrefDatastoreManager(context).also { INSTANCE = it }
             }
         }
     }
@@ -45,7 +50,7 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
      */
     internal suspend fun saveCachedEventList(events: List<Event>) {
         val jsonString = events.toJson()
-        putPreference(PrefConstants.EVENTS_JSON, jsonString)
+        saveToPreference(PrefConstants.EVENTS_JSON, jsonString)
     }
 
     /**
@@ -103,23 +108,23 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
         saveCachedEventList(currentEvents)
     }
 
-    override suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T):
+    override suspend fun <T> getPreferenceFlow(key: Preferences.Key<T>, defaultValue: T):
             Flow<T> = dataSource.data.catch { exception ->
-        if (exception is IOException){
+        if (exception is IOException) {
             emit(emptyPreferences())
-        }else{
+        } else {
             throw exception
         }
-    }.map { preferences->
-        val result = preferences[key]?: defaultValue
+    }.map { preferences ->
+        val result = preferences[key] ?: defaultValue
         result
     }
 
-    override suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T) :
+    override suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T):
             T = dataSource.data.first()[key] ?: defaultValue
 
-    override suspend fun <T> putPreference(key: Preferences.Key<T>, value: T) {
-        dataSource.edit {   preferences ->
+    override suspend fun <T> saveToPreference(key: Preferences.Key<T>, value: T) {
+        dataSource.edit { preferences ->
             preferences[key] = value
         }
     }
@@ -138,17 +143,10 @@ class PrefDataStoreManager(context: Context): IPrefDataStore {
 }
 
 
-private val Context.dataStore by preferencesDataStore(
-    name = Constants.SPLINTER_PREF_NAME
-)
-
-
-
-// Interface defining the core operation of preferences data store
-interface IPrefDataStore {
-    suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T): Flow<T>
-    suspend fun <T> getFirstPreference(key: Preferences.Key<T>,defaultValue: T):T
-    suspend fun <T> putPreference(key: Preferences.Key<T>,value:T)
+interface PrefOperations {
+    suspend fun <T> getPreferenceFlow(key: Preferences.Key<T>, defaultValue: T): Flow<T>
+    suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T): T
+    suspend fun <T> saveToPreference(key: Preferences.Key<T>, value: T)
     suspend fun <T> removePreference(key: Preferences.Key<T>)
     suspend fun <T> clearAllPreference()
 }

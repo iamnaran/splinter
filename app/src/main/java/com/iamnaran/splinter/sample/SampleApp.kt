@@ -2,6 +2,7 @@ package com.iamnaran.splinter.sample
 
 import android.app.Application
 import com.iamnaran.splinter.core.Config
+import com.iamnaran.splinter.core.Splinter
 import com.iamnaran.splinter.core.SplinterAgent
 
 class SampleApp : Application() {
@@ -15,9 +16,7 @@ class SampleApp : Application() {
             maxCachedEvents = 100
             sessionTimeOutDurationInMinute = 1
         }
-        SplinterAgent.initalize(this)
-        SplinterAgent.getInstance(this).configure(splinterConfig)
-
-
+        val splinterAgent = SplinterAgent.getInstance(this)
+        splinterAgent.initialize(splinterConfig)
     }
 }

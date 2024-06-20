@@ -43,7 +43,12 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.okhttp3.logging)
 
+
+
     testImplementation(libs.junit)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

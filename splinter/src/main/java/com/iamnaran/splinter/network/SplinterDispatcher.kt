@@ -1,7 +1,7 @@
 package com.iamnaran.splinter.network
 
 import com.iamnaran.splinter.core.Config
-import com.iamnaran.splinter.data.PrefDataStoreManager
+import com.iamnaran.splinter.data.PrefDatastoreManager
 import com.iamnaran.splinter.data.model.Event
 import com.iamnaran.splinter.data.model.EventStatus
 import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 internal class SplinterDispatcher(
     private val config: Config,
-    private val prefDataStoreManager: PrefDataStoreManager,
+    private val prefDataStoreManager: PrefDatastoreManager,
 ) {
 
     private var job: Job? = null
