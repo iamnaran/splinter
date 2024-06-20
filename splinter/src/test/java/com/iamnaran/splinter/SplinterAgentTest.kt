@@ -6,18 +6,12 @@
 package com.iamnaran.splinter
 
 import android.content.Context
-import androidx.datastore.core.DataStore
 import androidx.work.WorkManager
 import com.iamnaran.splinter.core.Config
 import com.iamnaran.splinter.core.Splinter
 import com.iamnaran.splinter.data.PrefDatastoreManager
-import com.iamnaran.splinter.data.model.Event
-import com.iamnaran.splinter.data.model.Identity
 import com.iamnaran.splinter.utils.CoroutineDispatcherProvider
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Test
@@ -25,8 +19,6 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import java.util.prefs.Preferences
 
 class SplinterAgentTest {
 
@@ -36,6 +28,7 @@ class SplinterAgentTest {
     private lateinit var workManager: WorkManager
     private lateinit var coroutineScope: CoroutineScope
     private lateinit var splinter: Splinter
+
     @Before
     fun setUp() {
         context = mock(Context::class.java)
@@ -52,7 +45,12 @@ class SplinterAgentTest {
 
     @Test
     fun testInitialize() {
-        val config = Config("sadasd","sadsad",sessionTimeOutDurationInMinute = 30, dispatchIntervalDurationInMinute = 15)
+        val config = Config(
+            "THIS_IS_API_KEY",
+            "THIS_IS_API_SECRET",
+            sessionTimeOutDurationInMinute = 30,
+            dispatchIntervalDurationInMinute = 15
+        )
         splinter.initialize(config)
         verify(workManager).enqueueUniquePeriodicWork(
             anyString(),
@@ -63,7 +61,7 @@ class SplinterAgentTest {
 
 
     @Test
-    fun testLogSplinterEvent()  {
+    fun testLogSplinterEvent() {
         val eventName = "test_event"
         val properties = mapOf("key" to "value")
 

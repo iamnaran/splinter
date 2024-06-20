@@ -28,7 +28,7 @@ class Splinter(
 
     private lateinit var config: Config
     private var currentSession: Session? = null
-    var identity: Identity? = null
+    private var identity: Identity? = null
 
 
     /**
@@ -129,6 +129,10 @@ class Splinter(
      */
     fun configureIdentity(identity: Identity) {
         this.identity = identity
+    }
+
+    fun getConfiguredIdentity(): Identity {
+        return identity!!
     }
 
 
