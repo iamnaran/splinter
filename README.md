@@ -21,21 +21,17 @@ Initialize Splinter SDK in your application class or wherever your application c
 class YourApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        SplinterAgent.init(this)
+        SplinterAgent.init(this      val splinterConfig = Config("YOUR_API_KEY", "YOUR_API_SECRET").apply {
+            dispatchIntervalDurationInMinute = 2L
+            maxCachedEvents = 100
+            sessionTimeOutDurationInMinute = 1
+        }
+        val splinterAgent = SplinterAgent.getInstance(this)
+        splinterAgent.initialize(splinterConfig)
     }
 }
 ```
 
-## Configuration
-Optionally, you can configure Splinter with a custom Config object for advanced settings:
-
-```kotlin
-val config = Config(
-    sessionTimeOutDurationInMinute = 30,
-    dispatchIntervalDurationInMinute = 15
-)
-SplinterAgent.setConfiguration(config)
-```
 ## Logging Events
 Log events using Splinter SDK:
 
