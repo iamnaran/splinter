@@ -10,7 +10,7 @@ Splinter Analytics is a powerful and lightweight SDK designed to help developers
 ## Features
 
 - **Event Logging:** 
-- **Periodic Event Dispatch:** 
+- **Periodic Batch Log Dispatch:** 
 - **Data Persistence:**
 
 ## Initialization
