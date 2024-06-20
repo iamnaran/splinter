@@ -79,7 +79,7 @@ class Splinter(
     fun logSplinterEvent(eventName: String, properties: Map<String, Any> = emptyMap()) {
         startSession()
 
-        val enhancedProperties = properties.toMutableMap().apply {
+        val customProperties = properties.toMutableMap().apply {
             put("session_id", currentSession!!.id)
             identity?.let {
                 put("user_id", it)
@@ -88,7 +88,7 @@ class Splinter(
 
         val newEvent = Event(
             name = eventName,
-            properties = enhancedProperties.toJson(),
+            properties = customProperties.toJson(),
             eventStatus = EventStatus.CACHED
         )
 

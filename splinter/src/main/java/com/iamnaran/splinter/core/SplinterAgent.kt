@@ -26,8 +26,4 @@ object SplinterAgent {
         }
     }
 
-    fun setInstanceForTesting(agent: Splinter) {
-        instance = agent
-    }
-
 }
